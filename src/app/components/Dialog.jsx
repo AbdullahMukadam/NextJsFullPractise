@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default function DialogComponent({ DialogOpen, setDialogOpen, handleSubmit, register, Handlesubmit }) {
+export default function DialogComponent({ DialogOpen, setDialogOpen, handleSubmit, register, Handlesubmit, loading }) {
 
 
     const submit = async (data) => {
@@ -60,7 +60,9 @@ export default function DialogComponent({ DialogOpen, setDialogOpen, handleSubmi
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Save changes</Button>
+                        <Button type="submit">
+                            {loading ? "Saving..." : "Save Changes"}
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>

@@ -1,8 +1,9 @@
 import ConnecToDb from "@/database/ConnectToDb";
+import Blog from "@/models/blog";
 import { NextResponse } from "next/server";
 
 
-export default async function POST(req) {
+export async function POST(req) {
     try {
         await ConnecToDb()
         const data = await req.json()
@@ -13,7 +14,23 @@ export default async function POST(req) {
             })
         }
 
-        console.log(data)
+        const newBlog = await new Blog({
+            tittle: data.tittle,
+            description: data.description
+        })
+
+        if(newBlog){
+          await newBlog.save()
+
+            return NextResponse.json({
+                success: true,
+                message:"New Blog Added Succesfully",
+                data : newBlog
+            })
+        }
+
+        
+       
     } catch (error) {
         return NextResponse.json({
             success: false,
