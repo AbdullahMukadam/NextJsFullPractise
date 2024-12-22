@@ -1,16 +1,17 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DialogComponent from './Dialog'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import useFetchBlogs from './UseFetchBlogs'
 
+
 export default function Addblog() {
     const [DialogOpen, setDialogOpen] = useState(false)
     const [loading, setIsloading] = useState(false)
     const { handleSubmit, register } = useForm()
-    const { fetchBlogs } = useFetchBlogs();
+    const { fetchBlogs, blogs, setBlogs } = useFetchBlogs();
 
     const Handlesubmit = async (data) => {
         setIsloading(true)
@@ -19,8 +20,9 @@ export default function Addblog() {
                 tittle: data.tittle,
                 description: data.description
             })
-            if (res) {
+            if (res.data.success) {
                 console.log(res.data)
+                
                 await fetchBlogs()
                 setIsloading(false)
                 setDialogOpen(false)

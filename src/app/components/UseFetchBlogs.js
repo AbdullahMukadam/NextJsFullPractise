@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 export default function useFetchBlogs() {
@@ -6,24 +6,25 @@ export default function useFetchBlogs() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchBlogs = async () => {
+
+    const fetchBlogs = useCallback(async () => {
+        setLoading(true);
         try {
             const response = await axios.get('http://localhost:3000/api/get-blog');
             if (response.data.success) {
                 setBlogs(response.data.blogs);
+                setError(null);
             } else {
                 setError(response.data.message);
             }
-        } catch (error) {
-            setError(error);
+        } catch (err) {
+            setError(err.message);
         } finally {
             setLoading(false);
         }
-    };
-
-    useEffect(() => {
-        fetchBlogs();
     }, []);
 
-    return { blogs, loading, error, fetchBlogs };
+   
+
+    return { blogs, loading, error, fetchBlogs, setBlogs };
 }
